@@ -307,3 +307,15 @@ html.lightbox-zoomed #lightbox-img-wrap .lightbox-extra {
   animation-duration: 0.25s;
   -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards; }
+
+/* Header link styles */
+header a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+header a:hover {
+  opacity: 0.7;
+}
