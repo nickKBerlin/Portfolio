@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+      /* Apply Urbanist Regular to body and general text */
+      body, p, a, span, div, li, td, th {
+          font-family: 'Urbanist', sans-serif !important;
+          font-weight: 400 !important;
+      }
+      
+      /* Apply Urbanist Bold to all headings */
+      h1, h2, h3, h4, h5, h6, .logo, .logo-text, .nav-container, .page-title, .gallery-title, .title {
+          font-family: 'Urbanist', sans-serif !important;
+          font-weight: 700 !important;
+      }
+  </style>
       <meta name="description"  content="Ich bringe Struktur, Tempo und Stil in die Postproduktion – für starke Geschichten im Schnitt. Spezialisiert auf Adobe Premiere &amp; After Effects." />
       <meta name="twitter:card"  content="summary_large_image" />
       <meta name="twitter:site"  content="@AdobePortfolio" />
@@ -32,7 +49,7 @@
         <div class="close-responsive-button"></div>
       </div>
           <nav class="nav-container" data-hover-hint="nav" data-hover-hint-placement="bottom-start">
-                <div class="gallery-title"><a href="expedition-44.html" >Video Editing &amp; Motion Design</a></div>
+                <div class="gallery-title"><a href="index.html" >Video Editing &amp; Motion Design</a></div>
       <div class="page-title">
         <a href="contact.html" >Contact</a>
       </div>
@@ -83,14 +100,14 @@
   </div>
     <header class="site-header js-site-header " data-context="theme.nav" data-hover-hint="nav" data-hover-hint-placement="top-start">
         <nav class="nav-container" data-hover-hint="nav" data-hover-hint-placement="bottom-start">
-                <div class="gallery-title"><a href="expedition-44.html" >Video Editing &amp; Motion Design</a></div>
+                <div class="gallery-title"><a href="index.html" >Video Editing &amp; Motion Design</a></div>
       <div class="page-title">
         <a href="contact.html" >Contact</a>
       </div>
         </nav>
         <div class="logo-wrap" data-context="theme.logo.header" data-hover-hint="logo" data-hover-hint-placement="bottom-start">
           <div class="logo e2e-site-logo-text logo-text  ">
-              <a href="expedition-44.html" class="preserve-whitespace">NICK KENNEDY</a>
+              <a href="index.html" class="preserve-whitespace">NICK KENNEDY</a>
 
           </div>
         </div>
@@ -633,9 +650,9 @@
             </div>
           </section>
         <section class="back-to-top" data-hover-hint="backToTop">
-          <a href="1.html#"><span class="arrow">&uarr;</span><span class="preserve-whitespace">Back to Top</span></a>
+          <a href="#"><span class="arrow">&uarr;</span><span class="preserve-whitespace">Back to Top</span></a>
         </section>
-        <a class="back-to-top-fixed js-back-to-top back-to-top-fixed-with-panel" data-hover-hint="backToTop" data-hover-hint-placement="top-start" href="1.html#">
+        <a class="back-to-top-fixed js-back-to-top back-to-top-fixed-with-panel" data-hover-hint="backToTop" data-hover-hint-placement="top-start" href="#">
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve" class="icon icon-back-to-top">
           <g>
@@ -655,9 +672,11 @@
     </div>
   </div>
   <div class="cookie-banner js-cookie-banner">
-    <p>Diese Website verwendet Cookies, um Ihnen ein optimales Nutzererlebnis zu bieten. Einige Cookies sind für den Betrieb der Seite notwendig, andere helfen uns, Inhalte zu verbessern.Mit Klick auf „Akzeptieren“ stimmen Sie der Verwendung zu.
-      <a class="consent-link" href="1.html#">Accept</a>
-      <a class="decline-link" href="1.html#">Ablehnen</a>
+    <p>Diese Website verwendet Cookies, um Ihnen ein optimales Nutzererlebnis zu bieten. Einige Cookies sind für den Betrieb der Seite notwendig, andere helfen uns, Inhalte zu verbessern.Mit Klick auf "Akzeptieren" stimmen Sie der Verwendung zu.
+      <a class="consent-link" href="#">Accept</a>
+      <a class="decline-link" href="#">Ablehnen</a>
+        <br>
+        <a href="site/impressum.html">Impressum</a> | <a href="site/datenschutz.html">Datenschutz</a>
     </p>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6458 -2604 16 16" class='close-btn'>
       <g id="Group_1479" data-name="Group 1479" transform="translate(-8281.367 -3556.368)">
@@ -666,6 +685,12 @@
       </g>
     </svg>
   </div>
+        
+    <!-- Footer with legal links -->
+    <footer style="text-align: center; padding: 20px 0; background-color: #1a1a1a; color: #999; font-size: 14px;">
+        <a href="site/impressum.html" style="color: #999; text-decoration: none; margin: 0 15px;">Impressum</a> | 
+        <a href="site/datenschutz.html" style="color: #999; text-decoration: none; margin: 0 15px;">Datenschutz</a>
+    </footer>
 </body>
 <script type="text/javascript">
   // fix for Safari's back/forward cache
