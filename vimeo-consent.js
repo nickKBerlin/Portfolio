@@ -1,39 +1,64 @@
 /**
  * Vimeo Consent Handler
  * Manages GDPR consent for embedded Vimeo videos
+ * Now integrated with site-wide cookie banner
  */
 
 (function() {
   'use strict';
 
-  const CONSENT_KEY = 'vimeo-consent';
-  const CONSENT_EXPIRY = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+  // Use the SAME cookie name as the main cookie banner
+  const CONSENT_KEY = 'cookie-consent';
+  const CONSENT_EXPIRY = 365 * 24 * 60 * 60 * 1000; // 365 days in milliseconds
 
-  // Check if consent has been given
+  // Check if consent has been given (from main cookie banner)
   function hasConsent() {
+    // First check localStorage
     const consent = localStorage.getItem(CONSENT_KEY);
-    if (!consent) return false;
-    
-    const consentData = JSON.parse(consent);
-    const now = new Date().getTime();
-    
-    // Check if consent has expired
-    if (consentData.expiry && now > consentData.expiry) {
-      localStorage.removeItem(CONSENT_KEY);
-      return false;
+    if (consent) {
+      try {
+        const consentData = JSON.parse(consent);
+        const now = new Date().getTime();
+        
+        // Check if consent has expired
+        if (consentData.expiry && now > consentData.expiry) {
+          localStorage.removeItem(CONSENT_KEY);
+          return false;
+        }
+        
+        return consentData.accepted === true;
+      } catch(e) {
+        // If parsing fails, assume simple true/false value
+        return consent === 'true';
+      }
     }
     
-    return consentData.accepted === true;
+    // Also check if main cookie banner cookie exists
+    const cookies = document.cookie.split(';');
+    for(let cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === CONSENT_KEY && value === 'true') {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
-  // Save consent
+  // Save consent (sync with main cookie banner)
   function setConsent(accepted) {
     const consentData = {
       accepted: accepted,
       timestamp: new Date().getTime(),
       expiry: new Date().getTime() + CONSENT_EXPIRY
     };
+    
+    // Save to localStorage
     localStorage.setItem(CONSENT_KEY, JSON.stringify(consentData));
+    
+    // Also save as cookie for compatibility
+    const expiryDate = new Date(consentData.expiry);
+    document.cookie = `${CONSENT_KEY}=${accepted}; expires=${expiryDate.toUTCString()}; path=/`;
   }
 
   // Create consent overlay
@@ -61,7 +86,7 @@
 
     acceptBtn.addEventListener('click', function() {
       setConsent(true);
-      enableVideo(iframe, overlay);
+      enableAllVideos();
     });
 
     declineBtn.addEventListener('click', function() {
@@ -70,7 +95,7 @@
     });
   }
 
-  // Enable the video iframe
+  // Enable a single video iframe
   function enableVideo(iframe, overlay) {
     // Remove the sandbox restrictions to allow the video to play
     iframe.removeAttribute('sandbox');
@@ -80,6 +105,15 @@
     if (overlay) {
       overlay.classList.add('hidden');
     }
+  }
+
+  // Enable all Vimeo videos on the page
+  function enableAllVideos() {
+    const iframes = document.querySelectorAll('iframe[src*="vimeo"]');
+    iframes.forEach(iframe => {
+      const overlay = iframe.parentElement.querySelector('.vimeo-consent-overlay');
+      enableVideo(iframe, overlay);
+    });
   }
 
   // Initialize consent handling for all Vimeo iframes
@@ -96,35 +130,29 @@
     const iframes = document.querySelectorAll('iframe[src*="vimeo"]');
     
     iframes.forEach(iframe => {
-      const container = iframe.parentElement;
-      
-      // Check if consent has already been given
+      // Check if consent has already been given (site-wide)
       if (hasConsent()) {
-        // Enable the video immediately
+        // Enable the video immediately - no overlay needed
         enableVideo(iframe, null);
       } else {
-        // Add consent overlay
+        // Add consent overlay only if no site-wide consent exists
         createConsentOverlay(iframe);
       }
     });
   }
 
-  // Also hook into the main cookie banner Accept button
+  // Hook into the main cookie banner Accept button
   function hookIntoCookieBanner() {
     // Find the main cookie banner's accept link
     const consentLink = document.querySelector('.cookie-banner .consent-link');
     
     if (consentLink) {
       consentLink.addEventListener('click', function(e) {
-        // Give consent for Vimeo
+        // Give consent site-wide
         setConsent(true);
         
-        // Enable all Vimeo videos
-        const iframes = document.querySelectorAll('iframe[src*="vimeo"]');
-        iframes.forEach(iframe => {
-          const overlay = iframe.parentElement.querySelector('.vimeo-consent-overlay');
-          enableVideo(iframe, overlay);
-        });
+        // Enable all Vimeo videos immediately
+        enableAllVideos();
       });
     }
   }
@@ -132,14 +160,15 @@
   // Initialize when script loads
   initVimeoConsent();
   
-  // Also hook into the main cookie banner after a short delay
+  // Hook into the main cookie banner
   setTimeout(hookIntoCookieBanner, 500);
 
   // Expose functions globally if needed
   window.vimeoConsent = {
     hasConsent: hasConsent,
     setConsent: setConsent,
-    processFrames: processVimeoFrames
+    processFrames: processVimeoFrames,
+    enableAll: enableAllVideos
   };
 
 })();
